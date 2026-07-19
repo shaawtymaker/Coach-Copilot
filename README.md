@@ -179,7 +179,7 @@ npm run dev
 # or
 bun dev
 ```
-Open your browser to the URL displayed in your terminal (typically `http://localhost:3000` or `http://localhost:5173`).
+Open your browser to the URL displayed in your terminal (typically `http://localhost:3000` or `http://localhost:8080`).
 
 ### 5. Production Compilation Test
 ```bash
