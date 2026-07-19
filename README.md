@@ -5,7 +5,7 @@
 <div align="center">
   
   <!-- Deployment Badges -->
-  <img src="https://img.shields.io/badge/LIVE%20DEMO-COACH--COPILOT.LOVABLE.APP-blueviolet?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  <img src="https://img.shields.io/badge/LIVE%20DEMO-Chat-to-gems.LOVABLE.APP-blueviolet?style=for-the-badge&logo=vercel" alt="Live Demo" />
   <img src="https://img.shields.io/badge/DEPLOYED-LOVABLE.DEV-00C2C2?style=for-the-badge&logo=lightning" alt="Deployed Lovable" />
   <img src="https://img.shields.io/badge/COMPILING-PASSING-brightgreen?style=for-the-badge&logo=github" alt="Compiling Status" />
   
