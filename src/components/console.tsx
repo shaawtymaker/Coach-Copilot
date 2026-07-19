@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { analyzeTranscript } from "@/lib/analyze.functions";
 import { parseTranscript } from "@/lib/parse-transcript";
@@ -18,6 +18,8 @@ export function Console() {
   const [result, setResult] = useState<AnalyzeResult | null>(null);
   const [reviews, setReviews] = useState<Record<string, ReviewState>>({});
   const [highlightId, setHighlightId] = useState<string | null>(null);
+  const [transcriptDirty, setTranscriptDirty] = useState(false);
+  const analyzedTranscript = useRef<string | null>(null);
   const messageRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const messages: Message[] = useMemo(() => parseTranscript(transcript), [transcript]);
@@ -27,8 +29,27 @@ export function Console() {
     onSuccess: (r) => {
       setResult(r);
       setReviews({});
+      analyzedTranscript.current = transcript;
+      setTranscriptDirty(false);
     },
   });
+
+  // Detect transcript edits after a report has been generated
+  useEffect(() => {
+    if (
+      result &&
+      analyzedTranscript.current !== null &&
+      transcript !== analyzedTranscript.current
+    ) {
+      setTranscriptDirty(true);
+    } else {
+      setTranscriptDirty(false);
+    }
+  }, [transcript, result]);
+
+  const handleRetry = useCallback(() => {
+    mutation.mutate(transcript);
+  }, [transcript, mutation]);
 
   const cardKeys = useMemo(() => (result ? collectCardKeys(result) : []), [result]);
   const allActioned = cardKeys.length > 0 && cardKeys.every((k) => reviews[k]?.action);
@@ -77,6 +98,8 @@ export function Console() {
           reviews={reviews}
           setReview={setReview}
           onEvidenceClick={jumpToEvidence}
+          onRetry={handleRetry}
+          transcriptDirty={transcriptDirty}
         />
       </main>
     </div>

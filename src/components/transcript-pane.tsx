@@ -61,9 +61,7 @@ export function TranscriptPane({
               Load sample
             </button>
           </div>
-          <div className="text-[11px] text-muted-foreground">
-            {messages.length} messages parsed
-          </div>
+          <div className="text-[11px] text-muted-foreground">{messages.length} messages parsed</div>
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 py-3">
