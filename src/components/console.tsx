@@ -70,10 +70,10 @@ export function Console() {
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-4">
           <div>
             <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              GenAI Client Intelligence Console
+              Coach Copilot
             </div>
             <h1 className="mt-1 font-serif text-2xl font-medium tracking-tight">
-              Weekly Client Report
+              Weekly Client Brief
             </h1>
           </div>
           <StatusPill hasReport={!!result} allActioned={allActioned} />

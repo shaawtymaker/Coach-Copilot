@@ -77,16 +77,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Client Intelligence Console" },
+      { title: "Coach Copilot" },
       {
         name: "description",
-        content: "Weekly client-intelligence report generation from coaching chat transcripts.",
+        content: "Weekly client-intelligence brief generation from coaching chat transcripts.",
       },
-      { name: "author", content: "Client Intelligence Console" },
-      { property: "og:title", content: "Client Intelligence Console" },
+      { name: "author", content: "Coach Copilot" },
+      { property: "og:title", content: "Coach Copilot" },
       {
         property: "og:description",
-        content: "Weekly client-intelligence report generation from coaching chat transcripts.",
+        content: "Weekly client-intelligence brief generation from coaching chat transcripts.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
