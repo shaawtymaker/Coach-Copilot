@@ -1,119 +1,185 @@
-# 🚀 Coach Copilot: GenAI Client Intelligence Console
+# 🤖 Coach Copilot — Weekly Client Intelligence Console
 
-> **A premium, evidence-grounded week-by-week intelligence report dashboard for 1:1 fitness, nutrition, and wellness coaches.**
+### *Artificial Intelligence Check-In Companion for 1:1 Health & Wellness Coaches*
+
+<div align="center">
+  
+  <!-- Deployment Badges -->
+  <img src="https://img.shields.io/badge/LIVE%20DEMO-COACH--COPILOT.LOVABLE.APP-blueviolet?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  <img src="https://img.shields.io/badge/DEPLOYED-LOVABLE.DEV-00C2C2?style=for-the-badge&logo=lightning" alt="Deployed Lovable" />
+  <img src="https://img.shields.io/badge/COMPILING-PASSING-brightgreen?style=for-the-badge&logo=github" alt="Compiling Status" />
+  
+  <br/>
+  
+  <!-- Tech Badges -->
+  <img src="https://img.shields.io/badge/REACT-19.2-00D8FF?style=flat-square&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/TYPESCRIPT-5.8-3178C6?style=flat-square&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/TANSTACK-START-FF4154?style=flat-square&logo=reactquery" alt="TanStack Start" />
+  <img src="https://img.shields.io/badge/TAILWIND%20CSS-4.2-38BDF8?style=flat-square&logo=tailwindcss" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/VITE-8.0-646CFF?style=flat-square&logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/LLM-GPT--5.5-FF6F61?style=flat-square&logo=openai" alt="LLM Provider" />
+  
+</div>
 
 ---
 
-## 📖 Project Overview
-
-**Coach Copilot** resolves a core operational bottleneck for 1:1 wellness coaches: reviewing long, unstructured messaging transcripts (WhatsApp, SMS, etc.) prior to weekly check-ins. 
-
-By utilizing structured GenAI extraction with a strict evidence-grounding constraint, the app translates raw logs into a structured dashboard mapping **8–10 key client wellness dimensions**. Every extraction is tagged with a clear confidence category and a direct hyperlink reference back to the original message, preventing hallucinated summaries and ensuring complete auditability.
-
-*This project was developed as a working prototype for the FUME GenAI Product Intern practical case study.*
+> **Coach Copilot** is a GenAI-powered weekly brief client intelligence workspace. It processes raw client-coach message logs, structures them into 8-10 health dimensions, grounds every extraction in direct transcript evidence tags, and subjects them to an inline Human-in-the-Loop verification pipeline—all within a clinical, minimal design system.
 
 ---
 
-## ✨ Core Features
+## 🏗️ System Architecture & Data Flow
+
+Below is the conceptual architecture of the Coach Copilot analysis and review lifecycle:
+
+```mermaid
+graph TD
+    %% Input Layer
+    A["Raw Log Input (Pasted Transcript)"] -->|Day 1..8 grouping / role parsing| B["Normalized Message Array"]
+    
+    %% Processing Layer
+    B -->|Serialized message strings with message IDs| C["TanStack Start serverFn ()"]
+    C -->|Secure POST Request| D["Lovable AI Gateway (GPT-5.5)"]
+    D -->|Strict JSON Prompt output| E["JSON Response Payload"]
+    
+    %% Validation Layer
+    E -->|Robust fallback validation| F["Zod Parser (reportSchema)"]
+    F -->|Fail-Safe: Catch schema discrepancies| G["Safe Default Report Object"]
+    
+    %% Render Layer
+    G -->|Dynamic hydration| H["Console Client Dashboard"]
+    
+    %% Human-in-the-Loop Layer
+    H -->|Click Evidence Badge| I["Transcript Auto-Scroll & Highlight"]
+    H -->|Human Action| J["Human Review Pipeline"]
+    
+    J -->|Approve| K1["Status Pill: Approved"]
+    J -->|Reject| K2["Status Pill: Dismissed (Dimmed Card)"]
+    J -->|Edit| K3["Inline Editor (Audit trail preserved)"]
+    
+    K1 & K2 & K3 -->|Evaluate all keys| L{"All cards actioned?"}
+    L -->|No| M["Pill: Draft — Pending Review"]
+    L -->|Yes| N["Pill: Reviewed"]
+```
+
+---
+
+## 🌟 Key Capabilities & Technical Features
 
 ### 1. Robust Multiformat Transcript Parser
-* **Flexible Ingestion:** Paste raw transcripts matching the exact multiline format (`Day 1\nClient: message`) or inline day indicators (`D1 | Client: message`).
-* **Auto-Indexing & Role Mapping:** Lines are automatically grouped under day contexts and mapped to senders (Client, Coach, or Accountability Coach) with distinct, clear colors.
+The parsing utility accepts raw clipboard data directly from chat platforms:
+* **Group Headers:** Day markers (e.g. `Day 1` or `D1` on their own lines) define day scopes.
+* **Inline Elements:** Directly parses inline formatted updates (e.g. `D3 | Accountability Coach: Steps 8,000`).
+* **Sequence Indexing:** Generates coordinate tags (`D1.1`, `D2.4`) automatically for precise evidence pointing.
 
-### 2. Strict Evidence Grounding ("Audit Chips")
-* **Interactive References:** Every section, dimension, risk flag, and next action displays pill-shaped evidence chips referencing message IDs (e.g., `D3.11`).
-* **Visual Teleportation:** Clicking an evidence chip smoothly scrolls the transcript panel to the specific line and highlights it with a temporary green focus ring.
+### 2. Evidence Grounding & Highlighting
+To prevent structural hallucination, every extraction requires proof:
+* **Interactive Badges:** Message index tags (e.g. `D7.3`) link to the extract's origin.
+* **Auto-Focus Engine:** Clicking a badge scrolls the transcript container to the exact line and triggers a green focus ring transition to help the coach quickly audit the source material.
 
-### 3. Human-in-the-Loop Review State Machine
-* **Card-Level Control:** Coaches can individually **Approve**, **Reject** (dims/fades the element), or **Edit** (provides an inline text editor) every item.
-* **Audit Trail Preservation:** Edited cards preserve the original AI output beneath a collapsible `<details>` toggle.
-* **Workflow Status:** Renders a floating indicator tracking the state of the brief. The status changes from **"Draft — Pending Review"** to **"Reviewed"** only when all cards have been processed.
+### 3. Human-in-the-Loop Verification Pipeline
+Coaches validate AI outputs using a granular review workflow:
+* **Approve:** Commits the card and updates the global check-in status.
+* **Reject:** Dismisses the element, fading the visual state to ensure it is not logged.
+* **Edit:** Opens an inline editor to override the AI's copy. The original AI output is preserved beneath a collapsible toggle for compliance audits.
 
-### 4. Mutation & Version Alert
-* **Stale Warnings:** If the raw transcript is edited *after* a report has been generated, an amber warning banner highlights that the current report is out-of-sync, prompt-protecting the coach from stale data references.
-
-### 5. Crash-Proof Data Parsing
-* **Zod Validation Fallback:** Utilizes strict Zod schema validation. If the LLM returns incomplete JSON or drops dimensions, the backend schema applies default structures (`missing` confidence, fallback text) to prevent UI crashes.
-
----
-
-## 🎨 Visual Color Taxonomy
-
-To protect coaches from confusing inferences with facts, every data point carries a strict provenance label color-coded for instant recognition:
-
-| Color | Tag | Meaning | Example |
-|---|---|---|---|
-| 🟢 **Green** | **Confirmed Fact** | Directly and objectively stated by client/coach | *"Client weight is 83 kg."* |
-| 🔵 **Blue** | **Client-Reported** | Subjective, self-reported metrics | *"Client slept fine last night."* |
-| 🟡 **Amber** | **AI Inference** | Extrapolated from patterns, work habits, or tone | *Work stress driving stomach acidity.* |
-| ⚪ **Grey** | **Missing** | Expected data points not mentioned in conversation | *"No water intake reported this week."* |
+### 4. Mutation Warning Banner
+If the raw transcript is edited after a report has been generated, a warning banner alerts the coach that the report references a modified version of the transcript, preventing desynchronized check-in briefs.
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## 📊 Visual Color Taxonomy
 
-* **Framework:** React 19 + TanStack Start (SSR & Server Functions)
-* **Routing & Context:** TanStack Router + React Query
-* **Styling:** Tailwind CSS v4 (with strict custom `oklch` color themes and Google Fonts integration)
-* **Typography:** Inter (Sans-serif body) & Source Serif 4 (Serif headings)
-* **Validation:** Zod schemas
-* **AI Provider:** GPT-5.5 via the Lovable AI Gateway
+Extracts are badges categorized by confidence. This visual language ensures coaches never mistake AI assumptions for confirmed facts:
+
+| Color Accent | Taxonomy Class | Meaning | Real-world Example |
+| :--- | :--- | :--- | :--- |
+| <img src="https://via.placeholder.com/15/22c55e/000000?text=+" alt="Green Badge" /> **Green** | **Confirmed Fact** | Directly stated metrics and verified facts | *"Slept 8 hours last night. Weight is 83 kg."* |
+| <img src="https://via.placeholder.com/15/0ea5e9/000000?text=+" alt="Blue Badge" /> **Blue** | **Client-Reported** | Subjective, self-reported states | *"Energy feels much better today than yesterday."* |
+| <img src="https://via.placeholder.com/15/f59e0b/000000?text=+" alt="Amber Badge" /> **Amber** | **AI Inference** | Extrapolated by the model based on patterns | *Office stress linked to recurrent stomach acidity.* |
+| <img src="https://via.placeholder.com/15/737373/000000?text=+" alt="Grey Badge" /> **Grey** | **Missing** | No mention of this health dimension in the log | *No water intake mentioned. Default status applied.* |
 
 ---
 
-## ⚙️ Installation & Local Setup
+## 🛡️ Hallucination & Failure Mitigations
 
-### Prerequisites
-Make sure you have Node.js (v18+) or Bun installed.
+1. **Quantification Limits:** Prompt constraints prohibit the model from inventing metrics. Dimensions without specific coordinates are marked as `missing` rather than guessed.
+2. **Role Separation:** Messages are pre-processed to isolate client, coach, and accountability coach turns, keeping the model from attributing coach instructions as client achievements.
+3. **Structured Fallback Schema:** Zod parser schemas validate response outputs at runtime, gracefully inserting default states if the model leaves a dimension out.
 
-### 1. Clone & Install Dependencies
+---
+
+## 📁 JSON Schema Representation
+
+```json
+{
+  "week_range": "string",
+  "weekly_summary": {
+    "text": "string",
+    "evidence": ["string"]
+  },
+  "dimensions": {
+    "nutrition_adherence": { "status": "string", "confidence": "confirmed_fact | client_reported | ai_inference | missing", "evidence": ["string"] },
+    "exercise_steps": { "status": "string", "confidence": "...", "evidence": ["string"] },
+    "sleep": { "status": "string", "confidence": "...", "evidence": ["string"] },
+    "water_intake": { "status": "string", "confidence": "...", "evidence": ["string"] },
+    "symptoms_stress": { "status": "string", "confidence": "...", "evidence": ["string"] },
+    "engagement_level": { "status": "string", "confidence": "...", "evidence": ["string"] }
+  },
+  "key_barriers": [
+    { "text": "string", "confidence": "string", "evidence": ["string"] }
+  ],
+  "pending_actions": [
+    { "text": "string", "status": "open | unclear", "evidence": ["string"] }
+  ],
+  "risk_flags": [
+    {
+      "text": "string",
+      "severity": "low | medium | high",
+      "rationale": "string",
+      "confidence": "string",
+      "evidence": ["string"]
+    }
+  ],
+  "recommended_next_action": {
+    "text": "string",
+    "rationale": "string",
+    "evidence": ["string"]
+  }
+}
+```
+
+---
+
+## ⚙️ Installation & Running Locally
+
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/shaawtymaker/chat-to-gems.git
-cd chat-to-gems
+git clone https://github.com/shaawtymaker/Coach-Copilot.git
+cd Coach-Copilot
+```
+
+### 2. Install Dependencies
+```bash
 npm install
 # or
 bun install
 ```
 
-### 2. Set Up Environment Variables
-Create a `.env` file in the root directory (or inject it directly into your shell):
+### 3. Add Environment Key
+Create a `.env` file in the root of the project:
 ```env
 LOVABLE_API_KEY=your_lovable_api_key_here
 ```
 
-### 3. Run Development Server
+### 4. Boot Dev Environment
 ```bash
 npm run dev
 # or
 bun dev
 ```
-Open [http://localhost:3000](http://localhost:3000) to view the console.
+Open your browser to `http://localhost:3000`.
 
-### 4. Create Production Build
-To check bundler safety and verify TypeScript compilation:
+### 5. Production Compilation Test
 ```bash
 npm run build
 ```
-
----
-
-## 📝 How to Test & Demo the Case Study
-
-1. Open the application.
-2. Click **"Load Sample"** in the left panel to load the 8-day transcript provided in the case study brief.
-3. Click **"Analyze Week"** to query the model.
-4. Review the generated dimensions (e.g. click the `D3.11` chip on the sleep card to view the accountability coach's update).
-5. Experiment with human review:
-   * **Approve** the Weekly Summary.
-   * **Reject** a false barrier.
-   * **Edit** the sleep status inline to insert a manual correction. Notice the original AI text remains readable under the *"show original"* link.
-6. Once every card is approved, edited, or rejected, observe the status badge in the header flip to **"Reviewed"**.
-7. Try modifying the transcript text on the left to trigger the **"Transcript modified"** warning banner.
-
----
-
-## 🛡️ Failure & Hallucination Mitigation Strategies
-
-1. **Quantification Locking:** Prompt instructions explicitly prohibit the model from inventing numbers. Dimensions without metric coordinates are systematically categorized as `missing`.
-2. **Role Boundaries:** Transcripts are pre-processed to explicitly tag client, coach, and accountability coach turns, preventing the LLM from attributing coach goals as client actions.
-3. **Audited Overrides:** Rather than letting AI write directly to the client's permanent record, all data must clear the coach review layer.
