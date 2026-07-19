@@ -5,7 +5,9 @@
 <div align="center">
   
   <!-- Deployment Badges -->
-  <img src="https://img.shields.io/badge/LIVE%20DEMO-Chat-to-gems.LOVABLE.APP-blueviolet?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  <a href="https://chat-to-gems.lovable.app/" target="_blank">
+    <img src="https://img.shields.io/badge/LIVE%20DEMO-CHAT--TO--GEMS.LOVABLE.APP-blueviolet?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  </a>
   <img src="https://img.shields.io/badge/DEPLOYED-LOVABLE.DEV-00C2C2?style=for-the-badge&logo=lightning" alt="Deployed Lovable" />
   <img src="https://img.shields.io/badge/COMPILING-PASSING-brightgreen?style=for-the-badge&logo=github" alt="Compiling Status" />
   
@@ -93,10 +95,10 @@ Extracts are badges categorized by confidence. This visual language ensures coac
 
 | Color Accent | Taxonomy Class | Meaning | Real-world Example |
 | :--- | :--- | :--- | :--- |
-| <img src="https://via.placeholder.com/15/22c55e/000000?text=+" alt="Green Badge" /> **Green** | **Confirmed Fact** | Directly stated metrics and verified facts | *"Slept 8 hours last night. Weight is 83 kg."* |
-| <img src="https://via.placeholder.com/15/0ea5e9/000000?text=+" alt="Blue Badge" /> **Blue** | **Client-Reported** | Subjective, self-reported states | *"Energy feels much better today than yesterday."* |
-| <img src="https://via.placeholder.com/15/f59e0b/000000?text=+" alt="Amber Badge" /> **Amber** | **AI Inference** | Extrapolated by the model based on patterns | *Office stress linked to recurrent stomach acidity.* |
-| <img src="https://via.placeholder.com/15/737373/000000?text=+" alt="Grey Badge" /> **Grey** | **Missing** | No mention of this health dimension in the log | *No water intake mentioned. Default status applied.* |
+| <img src="https://img.shields.io/badge/-%20-22c55e" alt="Green" /> 🟢 **Green** | **Confirmed Fact** | Directly stated metrics and verified facts | *"Slept 8 hours last night. Weight is 83 kg."* |
+| <img src="https://img.shields.io/badge/-%20-0ea5e9" alt="Blue" /> 🔵 **Blue** | **Client-Reported** | Subjective, self-reported states | *"Energy feels much better today than yesterday."* |
+| <img src="https://img.shields.io/badge/-%20-f59e0b" alt="Amber" /> 🟡 **Amber** | **AI Inference** | Extrapolated by the model based on patterns | *Office stress linked to recurrent stomach acidity.* |
+| <img src="https://img.shields.io/badge/-%20-737373" alt="Grey" /> ⚪ **Grey** | **Missing** | No mention of this health dimension in the log | *No water intake mentioned. Default status applied.* |
 
 ---
 
